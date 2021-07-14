@@ -141,7 +141,7 @@ class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    private func sorting(){     //выполнение сортировки
+    private func sorting() {     //выполнение сортировки
         if segmentedControl.selectedSegmentIndex == 0 {     //если выбран первый сегмент сегментконтроллера
             places = places.sorted(byKeyPath: "date", ascending: ascendingSorting)  //то сортируем по полю date и по значению ascending sorting
         } else {
