@@ -7,13 +7,12 @@
 
 import UIKit
 
-class NewPlaceVC: UITableViewController {
+final class NewPlaceVC: UITableViewController {
 
     var currentPlace: Place!
     var imageIsChanged = false //если юзер будет загружать своё изображение то должно быть true
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    
     @IBOutlet weak var brokerImage: UIImageView!
     @IBOutlet weak var bName: UITextField!
     @IBOutlet weak var bLocation: UITextField!
@@ -35,7 +34,7 @@ class NewPlaceVC: UITableViewController {
     }
 
     
-    // MARK: Table view delegate
+    // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {
@@ -149,7 +148,7 @@ class NewPlaceVC: UITableViewController {
 }
 
 
-// MARK: Text field delegate
+// MARK: - Text field delegate
 
 extension NewPlaceVC: UITextFieldDelegate {
     //скрытие клавиатуры по нажатии на кнопку done
@@ -169,7 +168,8 @@ extension NewPlaceVC: UITextFieldDelegate {
     }
 }
 
-// MARK: Work with image
+// MARK: - Work with image
+
 extension NewPlaceVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func chooseImagePicker(source: UIImagePickerController.SourceType){

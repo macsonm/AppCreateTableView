@@ -9,7 +9,7 @@ import UIKit
 import RealmSwift
 
 
-class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private let searchController = UISearchController(searchResultsController: nil)     // поисковая строка; nil - указывает что результаты оторбражать на том же VC
     private var places: Results<Place>!     //запрашиваем данные из БД в реальном времени
@@ -77,6 +77,7 @@ class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     //MARK: - Table view delegate
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {     //убирает выделение ячейки, которое остается после возврата к списку брокеров
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -152,6 +153,7 @@ class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+// MARK: - UISearchResultsUpdating
 
 extension MainVC: UISearchResultsUpdating {     //расширение для серчконтроллера
     

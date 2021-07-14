@@ -7,7 +7,7 @@
 
 import RealmSwift
 
-class Place: Object {
+final class Place: Object {
     
     @objc dynamic var name = ""
     @objc dynamic var location: String?

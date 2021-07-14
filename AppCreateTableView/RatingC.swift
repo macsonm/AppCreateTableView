@@ -7,9 +7,9 @@
 
 import UIKit
 
-@IBDesignable class RatingC: UIStackView {
+@IBDesignable final class RatingC: UIStackView {
 
-    // MARK: Propirties
+    // MARK: - Propirties
     
     var rating = 0
     
@@ -30,7 +30,7 @@ import UIKit
     }
     
     
-    // MARK: Initialization
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,7 +42,8 @@ import UIKit
         setupButtons()
     }
 
-    //MARK: Button actions
+    //MARK: - Button actions
+    
     @objc func ratingButtonTapped(button: UIButton) {
         
         guard let index = ratingButtons.firstIndex(of: button) else { return }      //определяем индекс кнопки которой касаемся
@@ -58,7 +59,7 @@ import UIKit
         
     }
     
-    // MARK: Private Methods
+    // MARK: - Private Methods
 
     private func setupButtons() {
         
