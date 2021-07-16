@@ -19,7 +19,7 @@ final class Place: Object {
     convenience init(name: String, location: String?, type: String?, imageData: Data?, rating: Double) {  // convience инициализирует все свойства в классе
         self.init() //инициализирует параметры по умолчанию
         
-        //далее присваивает уже конкретные, теперь нет необходимости указывать инициальзатор ы NewPlaceVC
+        //далее присваивает уже конкретные, теперь нет необходимости указывать инициальзаторы NewPlaceVC
         self.name = name
         self.location = location
         self.type = type
