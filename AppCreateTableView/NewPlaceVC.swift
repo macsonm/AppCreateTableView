@@ -32,13 +32,14 @@ final class NewPlaceVC: UITableViewController {
         saveButton.isEnabled = false        //по умолчанию saveButton отключена // если заполняется поле name должна снова быть доступна
         bName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         setupEditScreen()
-
     }
 
     
     // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.row == 0 {
             
@@ -71,7 +72,6 @@ final class NewPlaceVC: UITableViewController {
             
             //вызов alertController'а
             present(actionSheet, animated: true)
-            
         } else {
             view.endEditing(true)
         }
@@ -156,8 +156,7 @@ extension NewPlaceVC: UITextFieldDelegate {
         return true
     }
     
-    @objc
-    private func textFieldChanged() {
+    @objc private func textFieldChanged() {
         if bName.text?.isEmpty == false {
             saveButton.isEnabled = true
         } else {

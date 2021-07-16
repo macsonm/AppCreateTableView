@@ -159,7 +159,7 @@ extension MainVC: UISearchResultsUpdating {     //расширение для с
         filterContentForSearchText(searchController.searchBar.text!)
     }
     
-    private func filterContentForSearchText(_ searchText: String) {  //фильтрация контента по запросу поисковому
+    func filterContentForSearchText(_ searchText: String) {  //фильтрация контента по запросу поисковому
         filteredPlaces = places.filter("name CONTAINS[c] %@ OR location CONTAINS[c] %@", searchText, searchText) //заполняем коллекцию отфильтрованными объктами из основного массива places с помощью .filter //фильтрация данных с помощью realm
               
         tableView.reloadData()

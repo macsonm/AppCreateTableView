@@ -11,7 +11,11 @@ import UIKit
 
     // MARK: - Properties
     
-    var rating = 0
+    var rating = 0 {
+        didSet {
+            updateButtonSelectionState()
+        }
+    }
     
     private var ratingButtons = [UIButton]()
     
@@ -43,8 +47,7 @@ import UIKit
 
     //MARK: - Button actions
     
-    @objc
-    func ratingButtonTapped(button: UIButton) {
+    @objc func ratingButtonTapped(button: UIButton) {
         guard let index = ratingButtons.firstIndex(of: button) else { return }      //определяем индекс кнопки которой касаемся
         
         //calculate the rating of the selevted button
@@ -55,6 +58,7 @@ import UIKit
         } else {
             rating = selectedRating
         }
+        updateButtonSelectionState()
     }
     
     // MARK: - Private Methods
@@ -69,7 +73,7 @@ import UIKit
         ratingButtons.removeAll()
         
         //load button image
-        let bundle = Bundle(for:  type(of: self))
+        let bundle = Bundle(for: type(of: self))
         let filledStar = UIImage(named: "filledStar",
                                  in: bundle,
                                  compatibleWith: self.traitCollection)

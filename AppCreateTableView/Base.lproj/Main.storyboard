@@ -199,7 +199,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BLf-zZ-vfK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="dX2-hG-48F" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1277" y="-278"/>
+            <point key="canvasLocation" x="-659" y="-186"/>
         </scene>
         <!--My Brokers-->
         <scene sceneID="dkG-D5-aqt">
@@ -346,11 +346,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OXw-Ib-P7L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2632" y="-368"/>
+            <point key="canvasLocation" x="-2819" y="-368"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="6ru-mL-L8P">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0cA-tG-Ya5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jZg-2C-3ab" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="7VI-Sw-A6D">
@@ -362,9 +363,8 @@
                         <segue destination="ge1-rY-BW6" kind="relationship" relationship="rootViewController" id="Pf0-yb-qug"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0cA-tG-Ya5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1278" y="-931"/>
+            <point key="canvasLocation" x="-659" y="-952"/>
         </scene>
     </scenes>
     <designables>
