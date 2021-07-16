@@ -8,7 +8,6 @@
 import RealmSwift
 
 let realm = try! Realm()
-let realm2 = try! Realm()
 
 final class StorageManager {
 
