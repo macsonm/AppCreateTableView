@@ -9,7 +9,7 @@ import UIKit
 
 @IBDesignable final class RatingC: UIStackView {
 
-    // MARK: - Propirties
+    // MARK: - Properties
     
     var rating = 0
     
@@ -20,13 +20,12 @@ import UIKit
         didSet {
             updateButtonSelectionState()
         }
-        
     }
+
     @IBInspectable var starCount: Int = 5 {     //кол во звезд
         didSet {
             setupButtons()
         }
-        
     }
     
     
@@ -44,8 +43,8 @@ import UIKit
 
     //MARK: - Button actions
     
-    @objc func ratingButtonTapped(button: UIButton) {
-        
+    @objc
+    func ratingButtonTapped(button: UIButton) {
         guard let index = ratingButtons.firstIndex(of: button) else { return }      //определяем индекс кнопки которой касаемся
         
         //calculate the rating of the selevted button
@@ -56,7 +55,6 @@ import UIKit
         } else {
             rating = selectedRating
         }
-        
     }
     
     // MARK: - Private Methods
