@@ -9,9 +9,9 @@ import UIKit
 import RealmSwift
 
 
-class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    private let searchController = UISearchController(searchResultsController: nil)     // поисковая строка; nil - указывает что результаты оторбражать на том же VC
+    private let searchController = UISearchController(searchResultsController: nil)     // поисковая строка; nil - указывает что результаты отображать на том же VC
     private var places: Results<Place>!     //запрашиваем данные из БД в реальном времени
     private var filteredPlaces: Results<Place>! //массив в котором хранятся результаты поиска
     private var ascendingSorting = true //сортировка по возрастанию
@@ -23,25 +23,28 @@ class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private var isFiltering: Bool {     //при активации поискового запроса мы отслеживаем это и подгружаем наших брокеров
         return searchController.isActive && !searchBarIsEmpty
     }
+    private let storageManager = StorageManager.shared
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var reversedSortingButton: UIBarButtonItem!
-    
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         places = realm.objects(Place.self)  //отображаем всех брокеров (картинки и поля) на экране обратившись к БД
         
         //Setup the search controller
+        configureSearchController()
+        
+    }
+
+    private func configureSearchController() {
         searchController.searchResultsUpdater = self        //получатель об изменении текста в поисковой строке будет наш класс
         searchController.obscuresBackgroundDuringPresentation = false   //позволяет взаимодействовать с VC то есть с информацией которая будет отображаться
         searchController.searchBar.placeholder = "Search"   //название для поисковой строчки
         navigationItem.searchController = searchController  //строка поиска будет вставлена в Navigation Bar
         definesPresentationContext = true   //отпустить строку поиска при переходе на другой экран
-        
     }
 
     // MARK: - Table view data source
@@ -54,7 +57,9 @@ class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell    // as! - говорим что работать с нашим класом - указываем ссылку на наш класс и используем все свойства нашего класса
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? CustomTableViewCell else { // as! - говорим что работать с нашим класом - указываем ссылку на наш класс и используем все свойства нашего класса
+            return UITableViewCell()
+        }
 
         var place = Place()     //создаем экземпляр модели чтобы присвоить значение из того или иного массива
         
@@ -77,19 +82,19 @@ class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     //MARK: - Table view delegate
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {     //убирает выделение ячейки, которое остается после возврата к списку брокеров
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
         let place = places[indexPath.row]       //объект удаления попределяемый по индексу строки
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
-            
-            StorageManager.deleteObject(place)  //удаление объекта из БД
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)    //удаление на экране
-            
+
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _,_,_ in
+            self?.storageManager.deleteObject(place)  //удаление объекта из БД
+            self?.tableView.deleteRows(at: [indexPath], with: .automatic)    //удаление на экране
         }
+
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
     
@@ -107,28 +112,23 @@ class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 place = places[indexPath.row]   //если не было открыто searchBar и данные не фильтровались то отображать объекты из БД
             }
             
-            let newPlaceVC = segue.destination as! NewPlaceVC
+            guard let newPlaceVC = segue.destination as? NewPlaceVC else { return }
             newPlaceVC.currentPlace = place
         }
     }
-
 
     @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {        //по нажатии кнопки save мы передаем данные из NewPlaceVС в MainVC когда сохраняем инф об брокере
         guard let newBrokerVC = segue.source as? NewPlaceVC else { return }
         
         newBrokerVC.saveBroker()
         tableView.reloadData() //обновляем интерфейс
-        
     }
     
     @IBAction func sortSelection(_ sender: UISegmentedControl) {
-     
         sorting()
-        
     }
     
     @IBAction func revesedSorting(_ sender: Any) {
-        
         ascendingSorting.toggle() //меняет значение на противоположное
         
         if ascendingSorting {
@@ -138,10 +138,9 @@ class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
         
         sorting()
-        
     }
     
-    private func sorting(){     //выполнение сортировки
+    private func sorting() {     //выполнение сортировки
         if segmentedControl.selectedSegmentIndex == 0 {     //если выбран первый сегмент сегментконтроллера
             places = places.sorted(byKeyPath: "date", ascending: ascendingSorting)  //то сортируем по полю date и по значению ascending sorting
         } else {
@@ -152,6 +151,7 @@ class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+// MARK: - UISearchResultsUpdating
 
 extension MainVC: UISearchResultsUpdating {     //расширение для серчконтроллера
     
@@ -159,10 +159,10 @@ extension MainVC: UISearchResultsUpdating {     //расширение для с
         filterContentForSearchText(searchController.searchBar.text!)
     }
     
-    private func filterContentForSearchText(_ searchText: String) {  //фильтрация контента по запросу поисковому
-
+    func filterContentForSearchText(_ searchText: String) {  //фильтрация контента по запросу поисковому
         filteredPlaces = places.filter("name CONTAINS[c] %@ OR location CONTAINS[c] %@", searchText, searchText) //заполняем коллекцию отфильтрованными объктами из основного массива places с помощью .filter //фильтрация данных с помощью realm
               
         tableView.reloadData()
     }
+
 }

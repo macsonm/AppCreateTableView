@@ -7,13 +7,13 @@
 
 import UIKit
 
-class NewPlaceVC: UITableViewController {
+final class NewPlaceVC: UITableViewController {
 
     var currentPlace: Place!
     var imageIsChanged = false //если юзер будет загружать своё изображение то должно быть true
+    private let storageManager = StorageManager.shared
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    
     @IBOutlet weak var brokerImage: UIImageView!
     @IBOutlet weak var bName: UITextField!
     @IBOutlet weak var bLocation: UITextField!
@@ -35,8 +35,11 @@ class NewPlaceVC: UITableViewController {
     }
 
     
-    // MARK: Table view delegate
+    // MARK: - Table view delegate
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.row == 0 {
             
@@ -69,7 +72,6 @@ class NewPlaceVC: UITableViewController {
             
             //вызов alertController'а
             present(actionSheet, animated: true)
-            
         } else {
             view.endEditing(true)
         }
@@ -77,7 +79,6 @@ class NewPlaceVC: UITableViewController {
     
 //сохранение информации при нажатии на кнопку save, то есть вызывается метод позволяющий сохранить поля заполненные
     func saveBroker() {
-        
         var image: UIImage?
         
         if imageIsChanged {     //если картинка была добавлена юзером то
@@ -104,7 +105,7 @@ class NewPlaceVC: UITableViewController {
                 currentPlace?.rating = newBroker.rating
             }
         } else {
-            StorageManager.saveObject(newBroker)    //сохраняем новый объект в БД
+            storageManager.saveObject(newBroker)    //сохраняем новый объект в БД
         }
     }
     
@@ -115,7 +116,8 @@ class NewPlaceVC: UITableViewController {
             setupNavigationBar()
             imageIsChanged = true
             
-            guard  let data = currentPlace?.imageData, let image = UIImage(data: data) else { return }
+            guard let data = currentPlace?.imageData,
+                  let image = UIImage(data: data) else { return }
         
             brokerImage.image = image
             brokerImage.contentMode = .scaleAspectFit     //корректируем отображаемое изображение
@@ -124,7 +126,6 @@ class NewPlaceVC: UITableViewController {
             bType.text = currentPlace?.type
             ratingControl.rating = Int(currentPlace.rating)
         }
-        
     }
     
     //отображение в NavigationBar'e имени выбранной ячейки
@@ -136,20 +137,16 @@ class NewPlaceVC: UITableViewController {
         navigationItem.leftBarButtonItem = nil //убираем кнопку cancel
         title = currentPlace?.name      //присваиваем название брокера
         saveButton.isEnabled = true //включаем кноку save
-        
     }
     
     //выгрузка из памяти не сохраняемой информации, при отмене добавления нового брокера
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
-        
        dismiss(animated: true, completion: nil)
-        
     }
     
 }
 
-
-// MARK: Text field delegate
+// MARK: - Text field delegate
 
 extension NewPlaceVC: UITextFieldDelegate {
     //скрытие клавиатуры по нажатии на кнопку done
@@ -160,19 +157,20 @@ extension NewPlaceVC: UITextFieldDelegate {
     }
     
     @objc private func textFieldChanged() {
-        
         if bName.text?.isEmpty == false {
             saveButton.isEnabled = true
         } else {
             saveButton.isEnabled = false
         }
     }
+
 }
 
-// MARK: Work with image
+// MARK: - Work with image
+
 extension NewPlaceVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func chooseImagePicker(source: UIImagePickerController.SourceType){
+    func chooseImagePicker(source: UIImagePickerController.SourceType) {
         
         if UIImagePickerController.isSourceTypeAvailable(source) { //проверка на доступность источника выбора картинки - откуда она будет браться
             let imagePicker = UIImagePickerController()     //создаем экземпляр класса UIImagePickerController
@@ -187,7 +185,6 @@ extension NewPlaceVC: UIImagePickerControllerDelegate, UINavigationControllerDel
     
 //didFinishPickingMediaWithInfo - отображаем выбранную пользователем картинку
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
         brokerImage.image = info[.editedImage] as? UIImage // обращаемся к параметру info и берем значение по ключу editedImage и приводим это значение к типу UIImage то есть мы присваиваем отредактированное изображение к свойству ImageOfPlace
         brokerImage.contentMode = .scaleAspectFill //масштабируем изображение по содержимому UIImage
         brokerImage.clipsToBounds = true   //обрезаем по границе изображение

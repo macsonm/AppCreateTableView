@@ -9,20 +9,22 @@ import RealmSwift
 
 let realm = try! Realm()
 
-class StorageManager {
+final class StorageManager {
+
+    static var shared = StorageManager()
+
+    private init() {}
     
-    static func saveObject(_ place: Place) {          //сохранение объетов с типом Place
-        
+    func saveObject(_ place: Place) {          //сохранение объетов с типом Place
         try! realm.write {     //сохранение в БД
             realm.add(place)
         }
     }
-
     
-    static func deleteObject(_ place: Place){
-        
+    func deleteObject(_ place: Place){
         try! realm.write {
             realm.delete(place) //удаление из БД
         }
     }
+    
 }
