@@ -7,5 +7,5 @@ target 'AppCreateTableView' do
 
   # Pods for AppCreateTableView
   pod 'RealmSwift'
-  
+  pod 'Cosmos', '~> 23.0' 
 end

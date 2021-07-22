@@ -53,7 +53,7 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         if isFiltering {        //отображение объектов если активирова поисковая строка
             return filteredPlaces.count
         }
-        return  places.isEmpty ? 0 : places.count
+        return  places.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -61,22 +61,19 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             return UITableViewCell()
         }
 
-        var place = Place()     //создаем экземпляр модели чтобы присвоить значение из того или иного массива
+//        var place = Place()     //создаем экземпляр модели чтобы присвоить значение из того или иного массива
+//        if isFiltering {                                //если поиск запрос активирован
+//            place = filteredPlaces[indexPath.row]       //то place присваиваем значения из filteredPlaces
+//        } else {
+//            place = places[indexPath.row]               //стандартное отображение
+//        }
+        let place = isFiltering ? filteredPlaces[indexPath.row] : places[indexPath.row]     //тернарный оператор - замена выше 6 строк
         
-        if isFiltering {                                //если приск запрос активирован
-            place = filteredPlaces[indexPath.row]       //то place присваиваем значения из filteredPlaces
-        } else {
-            place = places[indexPath.row]               //стандартное отображение
-        }
-
         cell.nameLabel?.text = place.name
         cell.locationLabel.text = place.location
         cell.typeLabel.text = place.type
         cell.imageOfPlace.image = UIImage(data: place.imageData!)       //изображение ячейки берем из БД
-        
-
-        cell.imageOfPlace?.layer.cornerRadius = cell.imageOfPlace.frame.size.height / 2     //закругляем imageView
-        cell.imageOfPlace?.clipsToBounds = true        // обрезаем изображение по границам imageView
+        cell.cosmosView.rating = place.rating//отображение актуальных значений звезд на VC
 
         return cell
     }
@@ -105,12 +102,13 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         if segue.identifier == "showDetail" {
             guard let indexPath = tableView.indexPathForSelectedRow else { return }     //то передаем на NewPlaceVС запись, для этого в NewPlaceVC создаем объект var = currentPlace: Place - извлекаем индекс выбранной ячейки
             
-            let place: Place        //данные из БД
-            if isFiltering {        //если данные были отфильтрованы то
-                place = filteredPlaces[indexPath.row]   //зная индекс ячейки - извлекаем объект из массива filterdPlaces, который передадим на ViewController для отображения
-            } else {
-                place = places[indexPath.row]   //если не было открыто searchBar и данные не фильтровались то отображать объекты из БД
-            }
+//            let place: Place        //данные из БД
+//            if isFiltering {        //если данные были отфильтрованы то
+//                place = filteredPlaces[indexPath.row]   //зная индекс ячейки - извлекаем объект из массива filterdPlaces, который передадим на ViewController для отображения
+//            } else {
+//                place = places[indexPath.row]   //если не было открыто searchBar и данные не фильтровались то отображать объекты из БД
+//            }
+            let place = isFiltering ? filteredPlaces[indexPath.row] : places[indexPath.row]     // замена верхних 8 строк
             
             guard let newPlaceVC = segue.destination as? NewPlaceVC else { return }
             newPlaceVC.currentPlace = place

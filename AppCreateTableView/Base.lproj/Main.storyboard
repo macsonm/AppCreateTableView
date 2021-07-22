@@ -199,7 +199,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BLf-zZ-vfK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="dX2-hG-48F" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-659" y="-186"/>
+            <point key="canvasLocation" x="-1491.304347826087" y="-285.26785714285711"/>
         </scene>
         <!--My Brokers-->
         <scene sceneID="dkG-D5-aqt">
@@ -227,50 +227,66 @@
                                                         <constraint firstAttribute="width" constant="65" id="bJ2-R2-iBW"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9mc-IM-mRd">
-                                                    <rect key="frame" x="95" y="10" width="264" height="21"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="srF-Kn-N1H">
+                                                    <rect key="frame" x="95" y="10" width="211" height="63"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9mc-IM-mRd">
+                                                            <rect key="frame" x="0.0" y="0.0" width="211" height="21"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="21" id="CMT-f1-6Ah"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHS-cK-e2D">
+                                                            <rect key="frame" x="0.0" y="21" width="211" height="21"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="21" id="1bc-tH-e1p"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n3h-dJ-Jwq">
+                                                            <rect key="frame" x="0.0" y="42" width="211" height="21"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="21" id="uNH-tt-47g"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="90" placeholderIntrinsicHeight="14" translatesAutoresizingMaskIntoConstraints="NO" id="RM3-Nu-ksK" customClass="CosmosView" customModule="Cosmos">
+                                                    <rect key="frame" x="314" y="35.5" width="90" height="14"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="CMT-f1-6Ah"/>
+                                                        <constraint firstAttribute="width" constant="90" id="T2L-5T-GmC"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHS-cK-e2D">
-                                                    <rect key="frame" x="95" y="30" width="264" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="1bc-tH-e1p"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n3h-dJ-Jwq">
-                                                    <rect key="frame" x="95" y="50" width="264" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="uNH-tt-47g"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                                                            <real key="value" value="14"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="image" keyPath="filledImage" value="filledStar"/>
+                                                        <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="emptyStar"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="QHS-cK-e2D" firstAttribute="leading" secondItem="dF3-Ri-QMB" secondAttribute="trailing" constant="15" id="866-GF-iFk"/>
+                                                <constraint firstItem="RM3-Nu-ksK" firstAttribute="centerY" secondItem="7c4-Vs-Vy4" secondAttribute="centerY" id="2r9-Hz-Whi"/>
+                                                <constraint firstItem="srF-Kn-N1H" firstAttribute="top" secondItem="7c4-Vs-Vy4" secondAttribute="top" constant="10" id="CWA-XL-box"/>
                                                 <constraint firstItem="dF3-Ri-QMB" firstAttribute="leading" secondItem="7c4-Vs-Vy4" secondAttribute="leading" constant="15" id="Htu-j0-puh"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="QHS-cK-e2D" secondAttribute="trailing" constant="35" id="Jz8-qz-Qcb"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="n3h-dJ-Jwq" secondAttribute="bottom" constant="3" id="ULx-8j-YSt"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="QHS-cK-e2D" secondAttribute="bottom" constant="23" id="bMB-H4-2XV"/>
-                                                <constraint firstItem="n3h-dJ-Jwq" firstAttribute="leading" secondItem="dF3-Ri-QMB" secondAttribute="trailing" constant="15" id="eRH-rJ-wWZ"/>
-                                                <constraint firstItem="9mc-IM-mRd" firstAttribute="leading" secondItem="dF3-Ri-QMB" secondAttribute="trailing" constant="15" id="hY3-yg-o7i"/>
-                                                <constraint firstItem="9mc-IM-mRd" firstAttribute="top" secondItem="7c4-Vs-Vy4" secondAttribute="top" constant="10" id="kgO-VJ-Odk"/>
-                                                <constraint firstItem="QHS-cK-e2D" firstAttribute="top" secondItem="7c4-Vs-Vy4" secondAttribute="topMargin" constant="19" id="nwX-TM-CWQ"/>
-                                                <constraint firstAttribute="trailing" secondItem="9mc-IM-mRd" secondAttribute="trailing" constant="55" id="t80-DP-kNZ"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="n3h-dJ-Jwq" secondAttribute="trailing" constant="35" id="uP5-5t-7VP"/>
+                                                <constraint firstItem="RM3-Nu-ksK" firstAttribute="trailing" secondItem="7c4-Vs-Vy4" secondAttribute="trailingMargin" constant="10" id="Px3-bo-cqr"/>
+                                                <constraint firstAttribute="bottom" secondItem="srF-Kn-N1H" secondAttribute="bottom" constant="12" id="a64-Xb-FvL"/>
+                                                <constraint firstItem="srF-Kn-N1H" firstAttribute="leading" secondItem="dF3-Ri-QMB" secondAttribute="trailing" constant="15" id="gcF-G9-nk0"/>
                                                 <constraint firstItem="dF3-Ri-QMB" firstAttribute="centerY" secondItem="7c4-Vs-Vy4" secondAttribute="centerY" id="w2R-UF-OSi"/>
+                                                <constraint firstItem="RM3-Nu-ksK" firstAttribute="leading" secondItem="srF-Kn-N1H" secondAttribute="trailing" constant="8" id="wUw-0z-w1N"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="cosmosView" destination="RM3-Nu-ksK" id="Q2P-fd-9YY"/>
                                             <outlet property="imageOfPlace" destination="dF3-Ri-QMB" id="taK-5Y-Ucy"/>
                                             <outlet property="locationLabel" destination="QHS-cK-e2D" id="BDR-D2-H6v"/>
                                             <outlet property="nameLabel" destination="9mc-IM-mRd" id="YX2-ZV-pn0"/>
@@ -327,7 +343,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tpA-mu-del" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2001.449275362319" y="-368.30357142857139"/>
+            <point key="canvasLocation" x="-2200" y="-368"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="LhX-4l-9Xc">
@@ -351,7 +367,6 @@
         <!--Navigation Controller-->
         <scene sceneID="6ru-mL-L8P">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0cA-tG-Ya5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jZg-2C-3ab" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="7VI-Sw-A6D">
@@ -363,21 +378,27 @@
                         <segue destination="ge1-rY-BW6" kind="relationship" relationship="rootViewController" id="Pf0-yb-qug"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0cA-tG-Ya5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-659" y="-952"/>
+            <point key="canvasLocation" x="-1541" y="-958"/>
         </scene>
     </scenes>
     <designables>
+        <designable name="RM3-Nu-ksK">
+            <size key="intrinsicContentSize" width="90" height="14"/>
+        </designable>
         <designable name="wgV-83-fYE">
             <size key="intrinsicContentSize" width="252" height="44"/>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="5xO-sE-UFe"/>
+        <segue reference="Pf0-yb-qug"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AZ" width="25" height="24"/>
         <image name="down" width="320" height="320"/>
+        <image name="emptyStar" width="255" height="256"/>
+        <image name="filledStar" width="237.5" height="238"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
