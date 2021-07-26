@@ -31,7 +31,7 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //createTestData()
         places = realm.objects(Place.self)  //отображаем всех брокеров (картинки и поля) на экране обратившись к БД
         
         //Setup the search controller
@@ -147,6 +147,23 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         tableView.reloadData()
     }
+    
+    func createTestData() {     //тестовые данные
+        let storageManager = StorageManager.shared
+        let newBroker = Place(name: "test",
+                              location: "Moscow",
+                              type: "broker",
+                              imageData: Data(),
+                              rating: 2.0)
+        let newBroker2 = Place(name: "test2",
+                              location: "Moscow",
+                              type: "broker2",
+                              imageData: Data(),
+                              rating: 4.0)
+        storageManager.saveObject(newBroker)
+        storageManager.saveObject(newBroker2)
+    }
+    
 }
 
 // MARK: - UISearchResultsUpdating
