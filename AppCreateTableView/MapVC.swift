@@ -95,7 +95,6 @@ class MapVC: UIViewController {
     
         if CLLocationManager.locationServicesEnabled() {        //если служба включена
             setupLocationManager()
-            checkLocationServices()
         } else { //вызываем алерт контроллер чтобы включить службы
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.showAlert(

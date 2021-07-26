@@ -89,7 +89,7 @@ final class NewPlaceVC: UITableViewController {
         mapVC.incomeSegueIdentifier = identifier
         if identifier == "showBroker" {
             //передаем конктретные значения из полей в MapVC
-            mapVC.place.name = bName.text!
+            mapVC.place.name = bName.text
             mapVC.place.location = bLocation.text
             mapVC.place.type = bType.text
             mapVC.place.imageData = brokerImage.image?.pngData()
@@ -103,22 +103,16 @@ final class NewPlaceVC: UITableViewController {
         let imageData = image?.pngData()    //конвертируем изображение в pngData, (image - это UIimage поэтому конв в тип Data)
         
         //инициализируем через инициализатор в PlaceModel:
-        let newBroker = Place(name: bName.text!,
+        let newBroker = Place(name: bName.text,
                               location: bLocation.text,
                               type: bType.text,
                               imageData: imageData,
                               rating: Double(ratingControl.rating))
         
         if currentPlace != nil {        //определяем действие (редактирование или новый брокер)
-            try! realm.write {      //если редактируем брокера существующего в БД
-                currentPlace?.name = newBroker.name
-                currentPlace?.location = newBroker.location
-                currentPlace?.type = newBroker.type
-                currentPlace?.imageData = newBroker.imageData
-                currentPlace?.rating = newBroker.rating
-            }
+            storageManager.replace(currentPlace, to: newBroker)
         } else {
-            storageManager.saveObject(newBroker)    //сохраняем новый объект в БД
+            storageManager.save(newBroker)    //сохраняем новый объект в БД
         }
     }
     
