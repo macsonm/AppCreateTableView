@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0401E3BE269F7AE000B8DC72 /* RatingC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0401E3BD269F7AE000B8DC72 /* RatingC.swift */; };
+		048A207526AEAAB7002F5A91 /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048A207426AEAAB7002F5A91 /* MapVC.swift */; };
+		048A207E26AF2A0A002F5A91 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048A207D26AF2A0A002F5A91 /* MapKit.framework */; };
 		04C5DCD4268EFBD30029F710 /* NewPlaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C5DCD3268EFBD30029F710 /* NewPlaceVC.swift */; };
 		04CBEDA32693173C004B5A3C /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CBEDA22693173C004B5A3C /* StorageManager.swift */; };
 		04DD20AB268DB6E9001A77C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DD20AA268DB6E9001A77C9 /* AppDelegate.swift */; };
@@ -23,6 +25,8 @@
 
 /* Begin PBXFileReference section */
 		0401E3BD269F7AE000B8DC72 /* RatingC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingC.swift; sourceTree = "<group>"; };
+		048A207426AEAAB7002F5A91 /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
+		048A207D26AF2A0A002F5A91 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		04C5DCD3268EFBD30029F710 /* NewPlaceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlaceVC.swift; sourceTree = "<group>"; };
 		04CBEDA22693173C004B5A3C /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		04DD20A7268DB6E9001A77C9 /* AppCreateTableView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppCreateTableView.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				048A207E26AF2A0A002F5A91 /* MapKit.framework in Frameworks */,
 				2157813F048D1466C66E363A /* Pods_AppCreateTableView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,6 +82,7 @@
 				04DD20AC268DB6E9001A77C9 /* SceneDelegate.swift */,
 				04DD20C0268DBF52001A77C9 /* MainVC.swift */,
 				04C5DCD3268EFBD30029F710 /* NewPlaceVC.swift */,
+				048A207426AEAAB7002F5A91 /* MapVC.swift */,
 				04DD20C7268DEAAC001A77C9 /* PlaceModel.swift */,
 				0401E3BD269F7AE000B8DC72 /* RatingC.swift */,
 				04CBEDA22693173C004B5A3C /* StorageManager.swift */,
@@ -92,6 +98,7 @@
 		BE23499C08B6A03AC799EAE6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				048A207D26AF2A0A002F5A91 /* MapKit.framework */,
 				0E70A1A6A7A128C610D57FEB /* Pods_AppCreateTableView.framework */,
 			);
 			name = Frameworks;
@@ -227,6 +234,7 @@
 				04CBEDA32693173C004B5A3C /* StorageManager.swift in Sources */,
 				04C5DCD4268EFBD30029F710 /* NewPlaceVC.swift in Sources */,
 				04DD20C5268DE162001A77C9 /* CustomTableViewCell.swift in Sources */,
+				048A207526AEAAB7002F5A91 /* MapVC.swift in Sources */,
 				04DD20AD268DB6E9001A77C9 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

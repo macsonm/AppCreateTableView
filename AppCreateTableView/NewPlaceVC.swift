@@ -77,16 +77,29 @@ final class NewPlaceVC: UITableViewController {
         }
     }
     
+    // MARK: Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {     //переход на MapVC
+        
+        guard
+            let identifier = segue.identifier,
+            let mapVC = segue.destination as? MapVC
+        else { return }
+        
+        mapVC.incomeSegueIdentifier = identifier
+        if identifier == "showBroker" {
+            //передаем конктретные значения из полей в MapVC
+            mapVC.place.name = bName.text!
+            mapVC.place.location = bLocation.text
+            mapVC.place.type = bType.text
+            mapVC.place.imageData = brokerImage.image?.pngData()
+        }
+    }
+    
 //сохранение информации при нажатии на кнопку save, то есть вызывается метод позволяющий сохранить поля заполненные
     func saveBroker() {
-        var image: UIImage?
-        
-        if imageIsChanged {     //если картинка была добавлена юзером то
-            image = brokerImage.image           // вставляем картинку юзера
-        } else {
-            image = #imageLiteral(resourceName: "start")    //дефолтная картинка
-        }
-        
+
+        let image = imageIsChanged ? brokerImage.image : #imageLiteral(resourceName: "start")
         let imageData = image?.pngData()    //конвертируем изображение в pngData, (image - это UIimage поэтому конв в тип Data)
         
         //инициализируем через инициализатор в PlaceModel:
