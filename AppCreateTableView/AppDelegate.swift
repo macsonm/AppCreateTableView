@@ -7,7 +7,7 @@
 
 import UIKit
 import RealmSwift
-import CoreLocation
+//import CoreLocation       //нет необходимости
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Tell Realm to use this new configuration object for the default Realm
         Realm.Configuration.defaultConfiguration = config
         
-        CLLocationManager().requestAlwaysAuthorization()
+//        CLLocationManager().requestAlwaysAuthorization() //нет необходимости 
         
         return true
     }

@@ -87,6 +87,8 @@ final class NewPlaceVC: UITableViewController {
         else { return }
         
         mapVC.incomeSegueIdentifier = identifier
+        mapVC.mapVCDelegate = self
+        
         if identifier == "showBroker" {
             //передаем конктретные значения из полей в MapVC
             mapVC.place.name = bName.text
@@ -201,4 +203,12 @@ extension NewPlaceVC: UIImagePickerControllerDelegate, UINavigationControllerDel
         dismiss(animated: true) //закрываем ImagePickerController после добавления картинки
     }
 
+}
+
+
+extension NewPlaceVC: MapVCDelegate {
+    func getAddress(_ address: String?) {
+        bLocation.text = address
+    }
+    
 }

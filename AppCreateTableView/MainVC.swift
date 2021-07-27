@@ -31,7 +31,7 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //createTestData()
+//        createTestData()
         places = storageManager.allPlaces //отображаем всех брокеров (картинки и поля) на экране обратившись к БД
         
         //Setup the search controller
@@ -153,22 +153,47 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         tableView.reloadData()
     }
     
-    func createTestData() {     //тестовые данные
+    private func createTestData() {     //тестовые данные
         let storageManager = StorageManager.shared
-        let newBroker = Place(name: "test",
-                              location: "Moscow",
-                              type: "broker",
-                              imageData: Data(),
-                              rating: 2.0)
-        let newBroker2 = Place(name: "test2",
-                              location: "Moscow",
-                              type: "broker2",
-                              imageData: Data(),
-                              rating: 4.0)
-        storageManager.save(newBroker)
-        storageManager.save(newBroker2)
+        
+        let b1 = Place(name: "ibkr",
+                       location: "One Pickwick Plaza, Greenwich, CT 06830 USA",
+                       type: "broker",
+                       imageData: #imageLiteral(resourceName: "ibkr").pngData(),
+                       rating: 4.0)
+        let b2 = Place(name: "Tinkoff",
+                       location: "Москва Волоколамский проезд, дом 10, строение 1",
+                       type: "broker2",
+                       imageData: #imageLiteral(resourceName: "tinkof").pngData(),
+                       rating: 4.0)
+        let b3 = Place(name: "BCS",
+                       location: "Москва проспект мира 69",
+                       type: "broker2",
+                       imageData: #imageLiteral(resourceName: "bcs").pngData(),
+                       rating: 4.0)
+        let b4 = Place(name: "Sber",
+                       location: "Оружейный пер., 41, Москва",
+                       type: "broker2",
+                       imageData: #imageLiteral(resourceName: "sber").pngData(),
+                       rating: 4.0)
+        let b5 = Place(name: "VTB",
+                       location: "Долгоруковская ул., д. 2, Москва",
+                       type: "broker2",
+                       imageData: #imageLiteral(resourceName: "VTB").pngData(),
+                       rating: 4.0)
+        let b6 = Place(name: "test",
+                       location: "Санкт-Петербург",
+                       type: "broker2",
+                       imageData: #imageLiteral(resourceName: "photo").pngData(),
+                       rating: 2.0)
+        
+        let ar = [b1,b2,b3,b4,b5,b6]
+        
+        for newBroker in ar {
+            storageManager.save(newBroker)
+        }
+        
     }
-    
 }
 
 // MARK: - UISearchResultsUpdating
@@ -186,3 +211,4 @@ extension MainVC: UISearchResultsUpdating {     //расширение для с
     }
 
 }
+

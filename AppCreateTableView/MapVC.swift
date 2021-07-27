@@ -9,21 +9,37 @@ import UIKit
 import MapKit
 import CoreLocation
 
+protocol MapVCDelegate {        //передача данных от одного VC к другому
+    func getAddress(_ address: String?)
+}
+
 class MapVC: UIViewController {
     
+    var mapVCDelegate: MapVCDelegate?    //делегат класса MapVCDelegate
     var place = Place()
     let annotationIdentifier = "annotationIdentifier" //содержит уникальный идентификатор для аннотации
     let locationManager = CLLocationManager()   //настройка и управление службами геолокации
     let regionInMeters = 10_000.00
     var incomeSegueIdentifier = ""
+    var placeCoordinate: CLLocationCoordinate2D?    //принимает координаты брокерофиса
     
+    var directionsArray: [MKDirections] = []    //хранение маршрутов
+    
+    var previousLocation: CLLocation? {   //хранение предыдущего местоположения юзера
+        didSet {  //позиционируем карту при смене локации юзера
+            startTrackingUserLocation()
+        }
+    }
     @IBOutlet var mapPinImage: UIImageView!
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet var adressLabel: UILabel!
+    @IBOutlet var addressLabel: UILabel!
     @IBOutlet var doneButton: UIButton!
+    @IBOutlet var goButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addressLabel.text = ""
         mapView.delegate = self     //указываем делегат для нашего extension'а
         setupMapView()
         checkLocationServices()
@@ -36,9 +52,12 @@ class MapVC: UIViewController {
     }
     
     @IBAction func doneButtonPressed() {
+        mapVCDelegate?.getAddress(addressLabel.text)
+        dismiss(animated: true)     //закрыть VC
+    }
     
-        
-        
+    @IBAction func goButtonPressed() {
+        getDirections()
     }
     
     @IBAction func closeVC() {
@@ -49,13 +68,24 @@ class MapVC: UIViewController {
     
     private func setupMapView() {       // переход на картру при нажатии местоположения брокера
         
+        goButton.isHidden = true
         if incomeSegueIdentifier == "showBroker" {
             setupPlacemark()
             mapPinImage.isHidden = true
-            adressLabel.isHidden = true
+            addressLabel.isHidden = true
             doneButton.isHidden = true
+            goButton.isHidden = false
         }
         
+    }
+    
+        
+    private func resetMapView(withNew directions: MKDirections) {   //сбрасываем старые маршруты перед построением новых
+        mapView.removeOverlays(mapView.overlays)        //удаляем с карты наложение текущего маршрута
+        directionsArray.append(directions)
+        
+        let _ = directionsArray.map { $0.cancel() } // перебираем все значения массива и отменяем у них маршруты!
+        directionsArray.removeAll()
     }
     
     private func setupPlacemark() {     //маркер указывающий местоположение на карте
@@ -85,6 +115,8 @@ class MapVC: UIViewController {
             
             annotation.coordinate = placemarkLocation.coordinate        //привязываем аннотацию к точке на карте
             
+            self.placeCoordinate = placemarkLocation.coordinate //передаем координаты новому свойству placeCoordinate (получили координаты брокера)
+            
             self.mapView.showAnnotations([annotation], animated: true)     //задаем видимую область на карте чтобы было видно наши аннотации для метки
             self.mapView.selectAnnotation(annotation, animated: true)       //выделяем созданную аннотацию
             
@@ -95,6 +127,7 @@ class MapVC: UIViewController {
     
         if CLLocationManager.locationServicesEnabled() {        //если служба включена
             setupLocationManager()
+            checkLocationAuthorization()
         } else { //вызываем алерт контроллер чтобы включить службы
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.showAlert(
@@ -117,7 +150,7 @@ class MapVC: UIViewController {
         switch locationManager.authorizationStatus {
         case .authorizedWhenInUse:
             mapView.showsUserLocation = true
-            if incomeSegueIdentifier == "getAdress" { showUserLocation() }
+            if incomeSegueIdentifier == "getAddress" { showUserLocation() }
         case .denied:
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.showAlert(
@@ -145,6 +178,85 @@ class MapVC: UIViewController {
                                             longitudinalMeters: regionInMeters)
             mapView.setRegion(region, animated: true)           //отображаем регион на экране
         }
+    }
+    
+    private func startTrackingUserLocation() {      //задаем условия
+     
+        guard let previousLocation = previousLocation else { return }
+        let center = getCenterLocation(for: mapView)    //отображем данные коорд в центре экрана
+   
+        //обновляем область если расстояние между точками больше 50м
+        guard center.distance(from: previousLocation) > 50 else { return }
+        self.previousLocation = center
+        
+        //задержка в отображении
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.showUserLocation()
+        }
+    }
+    private func getDirections() {      //построение маршрута
+        
+        guard let location = locationManager.location?.coordinate else {        //определение координат юзера .location.coordinate
+            showAlert(title: "Error", message: "Current location not found")
+            return
+        }
+        
+        locationManager.startUpdatingLocation()     //постоянно отслеживаем местоположение юзера
+        previousLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        
+        guard let request = createDirectionsRequest(from: location) else {       //присваиваем request результат работы createDirectionRequest
+            showAlert(title: "Error", message: "Destination is not found")
+            return
+        }
+        
+        let directions = MKDirections(request: request)     //создаем маршрут на основании успешного запроса
+        resetMapView(withNew: directions)   //сбрасываем текущие маршруты
+        
+        directions.calculate { (response, error) in     //расчет маршрута
+            
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            guard let response = response else {        //если нет ошибок, то извлекаем обработанный маршрут
+                self.showAlert(title: "Error", message: "Direcrions is not available")
+                return
+            }
+            
+            for route in response.routes {
+                self.mapView.addOverlay(route.polyline)
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)      // видимость карты делаем по всему маршруту
+                
+                let distance = String(format: "%.1f", route.distance / 1000)        //определяем расстояние
+                let timeInterval = route.expectedTravelTime     //опр время в пути
+                
+                print("Distance to destination point: \(distance) km.")
+                print("Time in way is: \(timeInterval) sec.")
+            }
+        }
+    }
+    
+    private func createDirectionsRequest(from coordinate: CLLocationCoordinate2D) -> MKDirections.Request? {     //запрос для построения маршрута
+        
+        guard let destinationCoordinate = placeCoordinate else { return nil }   //определение коорд назначения
+        let startingLocation = MKPlacemark(coordinate: coordinate)   //точка начала маршрута на карте
+        let destination = MKPlacemark(coordinate: destinationCoordinate)    //точка назначения
+        
+        let request = MKDirections.Request()    //определяет начальную и конечную точку маршрута
+        request.source = MKMapItem(placemark: startingLocation)
+        request.destination = MKMapItem(placemark: destination)
+        request.transportType = .automobile //задаем тип транспорта
+        request.requestsAlternateRoutes = true  // позволяет строить альтернативные маршруты
+        
+        return request
+    }
+    
+    private func getCenterLocation(for mapView: MKMapView) -> CLLocation {      //определение координат отображаемых в центре карты
+        let latitude = mapView.centerCoordinate.latitude        //получение широты центра экрана
+        let longitude = mapView.centerCoordinate.longitude      //получение долготы
+        
+        return CLLocation(latitude: latitude, longitude: longitude)
     }
     
     private func showAlert(title: String, message: String) {
@@ -182,6 +294,52 @@ extension MapVC: MKMapViewDelegate {        //отображение банне�
         
         return annotationView
         
+    }
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {   //вызывается каждый раз при смене отображаемого на экране региона и при вызове отображаем адресс который находится в центре этого региона
+        let center = getCenterLocation(for: mapView)
+        let geocoder = CLGeocoder()
+        
+        if incomeSegueIdentifier == "showBroker" && previousLocation != nil {       //при построении маршрута previusLocation != nil,
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3){               //то позиционируем карту по местоположению юзера с задержкой 3сек
+                self.showUserLocation()
+            }
+        }
+        
+        geocoder.cancelGeocode()        //освобождение ресурсов связаных с геокодированием
+        
+        //преобразуем координаты в текст
+        geocoder.reverseGeocodeLocation(center) { (placemarks, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            guard let placemarks = placemarks else { return }
+            
+            let placemark = placemarks.first        //объект CoreLocation
+            let streetName = placemark?.thoroughfare    //извлекаем адрес в текстовом формате через свойство .thoroughfare
+            let buildNumber = placemark?.subThoroughfare    //извлекаем номер дома
+            
+            DispatchQueue.main.async {      //делаем операцию в другом потоке?
+                
+                if streetName != nil && buildNumber != nil {
+                self.addressLabel.text = "\(streetName!), \(buildNumber!)"
+                } else if streetName != nil {
+                    self.addressLabel.text = "\(streetName!)"
+                } else {
+                    self.addressLabel.text = ""
+                }
+            }
+        }
+    }
+    
+    //подсветка возможных маршрутов
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)  //рендерим наложения маршрутов сделанных ранее
+        renderer.strokeColor = .blue  //придаем цвет маршруту
+        
+        return renderer
     }
 }
 
