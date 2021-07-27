@@ -12,7 +12,7 @@ import RealmSwift
 final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private let searchController = UISearchController(searchResultsController: nil)     // поисковая строка; nil - указывает что результаты отображать на том же VC
-    private var places: Results<Place>!     //запрашиваем данные из БД в реальном времени
+    private var places: Results<Place>?   //запрашиваем данные из БД в реальном времени
     private var filteredPlaces: Results<Place>! //массив в котором хранятся результаты поиска
     private var ascendingSorting = true //сортировка по возрастанию
     private var searchBarIsEmpty: Bool {       //пустая строка или нет
@@ -32,13 +32,16 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         //createTestData()
-        places = realm.objects(Place.self)  //отображаем всех брокеров (картинки и поля) на экране обратившись к БД
+        places = storageManager.allPlaces //отображаем всех брокеров (картинки и поля) на экране обратившись к БД
         
         //Setup the search controller
         configureSearchController()
         
     }
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     private func configureSearchController() {
         searchController.searchResultsUpdater = self        //получатель об изменении текста в поисковой строке будет наш класс
         searchController.obscuresBackgroundDuringPresentation = false   //позволяет взаимодействовать с VC то есть с информацией которая будет отображаться
@@ -53,7 +56,7 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         if isFiltering {        //отображение объектов если активирова поисковая строка
             return filteredPlaces.count
         }
-        return  places.count
+        return  places?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -67,13 +70,13 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
 //        } else {
 //            place = places[indexPath.row]               //стандартное отображение
 //        }
-        let place = isFiltering ? filteredPlaces[indexPath.row] : places[indexPath.row]     //тернарный оператор - замена выше 6 строк
+        let place = isFiltering ? filteredPlaces[indexPath.row] : places?[indexPath.row]     //тернарный оператор - замена выше 6 строк
         
-        cell.nameLabel?.text = place.name
-        cell.locationLabel.text = place.location
-        cell.typeLabel.text = place.type
-        cell.imageOfPlace.image = UIImage(data: place.imageData!)       //изображение ячейки берем из БД
-        cell.cosmosView.rating = place.rating//отображение актуальных значений звезд на VC
+        cell.nameLabel?.text = place?.name
+        cell.locationLabel.text = place?.location
+        cell.typeLabel.text = place?.type
+        cell.imageOfPlace.image = UIImage(data: place?.imageData ?? Data())       //изображение ячейки берем из БД
+        cell.cosmosView.rating = place?.rating ?? 0//отображение актуальных значений звезд на VC
 
         return cell
     }
@@ -85,10 +88,12 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let place = places[indexPath.row]       //объект удаления попределяемый по индексу строки
+        let place = places?[indexPath.row]       //объект удаления попределяемый по индексу строки
 
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _,_,_ in
-            self?.storageManager.deleteObject(place)  //удаление объекта из БД
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") {[weak self] _,_,_ in
+            if let place = place {
+                self?.storageManager.delete(place)  //удаление объекта из БД
+            }
             self?.tableView.deleteRows(at: [indexPath], with: .automatic)    //удаление на экране
         }
 
@@ -108,7 +113,7 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
 //            } else {
 //                place = places[indexPath.row]   //если не было открыто searchBar и данные не фильтровались то отображать объекты из БД
 //            }
-            let place = isFiltering ? filteredPlaces[indexPath.row] : places[indexPath.row]     // замена верхних 8 строк
+            let place = isFiltering ? filteredPlaces[indexPath.row] : places?[indexPath.row]     // замена верхних 8 строк
             
             guard let newPlaceVC = segue.destination as? NewPlaceVC else { return }
             newPlaceVC.currentPlace = place
@@ -140,9 +145,9 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     private func sorting() {     //выполнение сортировки
         if segmentedControl.selectedSegmentIndex == 0 {     //если выбран первый сегмент сегментконтроллера
-            places = places.sorted(byKeyPath: "date", ascending: ascendingSorting)  //то сортируем по полю date и по значению ascending sorting
+            places = places?.sorted(byKeyPath: "date", ascending: ascendingSorting)  //то сортируем по полю date и по значению ascending sorting
         } else {
-            places = places.sorted(byKeyPath: "name", ascending: ascendingSorting)   //иначе выбран другой элемент сегментконтроллера и отсортирован по возрастанию
+            places = places?.sorted(byKeyPath: "name", ascending: ascendingSorting)   //иначе выбран другой элемент сегментконтроллера и отсортирован по возрастанию
         }
         
         tableView.reloadData()
@@ -160,8 +165,8 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                               type: "broker2",
                               imageData: Data(),
                               rating: 4.0)
-        storageManager.saveObject(newBroker)
-        storageManager.saveObject(newBroker2)
+        storageManager.save(newBroker)
+        storageManager.save(newBroker2)
     }
     
 }
@@ -171,11 +176,11 @@ final class MainVC: UIViewController, UITableViewDataSource, UITableViewDelegate
 extension MainVC: UISearchResultsUpdating {     //расширение для серчконтроллера
     
     func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
+        filterContentForSearchText(searchController.searchBar.text ?? "")
     }
     
     func filterContentForSearchText(_ searchText: String) {  //фильтрация контента по запросу поисковому
-        filteredPlaces = places.filter("name CONTAINS[c] %@ OR location CONTAINS[c] %@", searchText, searchText) //заполняем коллекцию отфильтрованными объктами из основного массива places с помощью .filter //фильтрация данных с помощью realm
+        filteredPlaces = places?.filter("name CONTAINS[c] %@ OR location CONTAINS[c] %@", searchText, searchText) //заполняем коллекцию отфильтрованными объктами из основного массива places с помощью .filter //фильтрация данных с помощью realm
               
         tableView.reloadData()
     }
