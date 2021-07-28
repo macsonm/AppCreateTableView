@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0401E3BE269F7AE000B8DC72 /* RatingC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0401E3BD269F7AE000B8DC72 /* RatingC.swift */; };
+		0455BBE226B1501300D36450 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455BBE126B1501300D36450 /* MapManager.swift */; };
 		048A207526AEAAB7002F5A91 /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048A207426AEAAB7002F5A91 /* MapVC.swift */; };
 		048A207E26AF2A0A002F5A91 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048A207D26AF2A0A002F5A91 /* MapKit.framework */; };
 		04C5DCD4268EFBD30029F710 /* NewPlaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C5DCD3268EFBD30029F710 /* NewPlaceVC.swift */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		0401E3BD269F7AE000B8DC72 /* RatingC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingC.swift; sourceTree = "<group>"; };
+		0455BBE126B1501300D36450 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		048A207426AEAAB7002F5A91 /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		048A207D26AF2A0A002F5A91 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		04C5DCD3268EFBD30029F710 /* NewPlaceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlaceVC.swift; sourceTree = "<group>"; };
@@ -57,6 +59,54 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0455BBE926B15FF900D36450 /* VC */ = {
+			isa = PBXGroup;
+			children = (
+				04DD20C0268DBF52001A77C9 /* MainVC.swift */,
+				04C5DCD3268EFBD30029F710 /* NewPlaceVC.swift */,
+				048A207426AEAAB7002F5A91 /* MapVC.swift */,
+				04DD20C4268DE162001A77C9 /* CustomTableViewCell.swift */,
+			);
+			path = VC;
+			sourceTree = "<group>";
+		};
+		0455BBEA26B1603100D36450 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				04DD20C7268DEAAC001A77C9 /* PlaceModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0455BBEB26B1604200D36450 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0455BBE126B1501300D36450 /* MapManager.swift */,
+				0401E3BD269F7AE000B8DC72 /* RatingC.swift */,
+				04CBEDA22693173C004B5A3C /* StorageManager.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		0455BBEC26B1607300D36450 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				04DD20AC268DB6E9001A77C9 /* SceneDelegate.swift */,
+				04DD20B3268DB6EA001A77C9 /* Assets.xcassets */,
+				04DD20AA268DB6E9001A77C9 /* AppDelegate.swift */,
+			);
+			path = "Support Files";
+			sourceTree = "<group>";
+		};
+		0455BBEF26B160A500D36450 /* Interface Builder */ = {
+			isa = PBXGroup;
+			children = (
+				04DD20B0268DB6E9001A77C9 /* Main.storyboard */,
+				04DD20B5268DB6EA001A77C9 /* LaunchScreen.storyboard */,
+			);
+			path = "Interface Builder";
+			sourceTree = "<group>";
+		};
 		04DD209E268DB6E9001A77C9 = {
 			isa = PBXGroup;
 			children = (
@@ -78,18 +128,11 @@
 		04DD20A9268DB6E9001A77C9 /* AppCreateTableView */ = {
 			isa = PBXGroup;
 			children = (
-				04DD20AA268DB6E9001A77C9 /* AppDelegate.swift */,
-				04DD20AC268DB6E9001A77C9 /* SceneDelegate.swift */,
-				04DD20C0268DBF52001A77C9 /* MainVC.swift */,
-				04C5DCD3268EFBD30029F710 /* NewPlaceVC.swift */,
-				048A207426AEAAB7002F5A91 /* MapVC.swift */,
-				04DD20C7268DEAAC001A77C9 /* PlaceModel.swift */,
-				0401E3BD269F7AE000B8DC72 /* RatingC.swift */,
-				04CBEDA22693173C004B5A3C /* StorageManager.swift */,
-				04DD20C4268DE162001A77C9 /* CustomTableViewCell.swift */,
-				04DD20B0268DB6E9001A77C9 /* Main.storyboard */,
-				04DD20B3268DB6EA001A77C9 /* Assets.xcassets */,
-				04DD20B5268DB6EA001A77C9 /* LaunchScreen.storyboard */,
+				0455BBE926B15FF900D36450 /* VC */,
+				0455BBEB26B1604200D36450 /* Helpers */,
+				0455BBEA26B1603100D36450 /* Models */,
+				0455BBEC26B1607300D36450 /* Support Files */,
+				0455BBEF26B160A500D36450 /* Interface Builder */,
 				04DD20B8268DB6EA001A77C9 /* Info.plist */,
 			);
 			path = AppCreateTableView;
@@ -233,6 +276,7 @@
 				04DD20C8268DEAAC001A77C9 /* PlaceModel.swift in Sources */,
 				04CBEDA32693173C004B5A3C /* StorageManager.swift in Sources */,
 				04C5DCD4268EFBD30029F710 /* NewPlaceVC.swift in Sources */,
+				0455BBE226B1501300D36450 /* MapManager.swift in Sources */,
 				04DD20C5268DE162001A77C9 /* CustomTableViewCell.swift in Sources */,
 				048A207526AEAAB7002F5A91 /* MapVC.swift in Sources */,
 				04DD20AD268DB6E9001A77C9 /* SceneDelegate.swift in Sources */,
@@ -392,7 +436,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = macsonm.AppCreateTableView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -411,7 +455,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = macsonm.AppCreateTableView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
